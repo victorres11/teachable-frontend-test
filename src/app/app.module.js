@@ -11,6 +11,7 @@ const MODULE_NAME = 'app';
             this.query = '';
             this.result = {};
             this.favoriteGems = {};
+            this.error = '';
 
             this.executeQuery = () => {
                 const rubyApiPromise = new Promise( (resolve, reject) => {
@@ -27,8 +28,10 @@ const MODULE_NAME = 'app';
                     this.result = result;
                     // View wasn't updating, so forcing it to reset with $apply().
                     $scope.$apply();
-                }, function(err) {
+                }).catch( err => {
                     console.log('err ' + err);
+                    this.error = 'No gem with this name was found. Please check your spelling and try again.'
+                    $scope.$apply();
                 });
             };
 

@@ -8,11 +8,10 @@ module.exports = function (req, resolve, reject) {
   else {
     const url = 'https://rubygems.org' + req.originalUrl;
     request.get(url,function(err,response,body){
-      if(response.statusCode === 400) { // no query was sent, so send an empty array as results
+      if (err) {
           // TODO: Change to catch all bad status codes.
-          reject("Invalid status code from API.")
-      }
-      else {
+          reject("Ruby API hit an error. Are you sure this is a valid Gem?")
+      } else {
           resolve(JSON.parse(body))
       }
       });

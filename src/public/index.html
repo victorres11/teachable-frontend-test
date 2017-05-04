@@ -15,7 +15,7 @@
     <div>
         <h2>Resulting Gem:</h2>
         <!-- TODO: Update the start image depending on whether its already saved or not -->
-        <p><strong>{{ query.result.name }}</strong> {{ query.result.info }} <i class="fa fa-star-o fa-lg" aria-hidden="true" ng-if="query.result.name" ng-click="query.handleFavoritesClick(query.result)"></i></p>
+        <p><strong>{{ query.result.name || query.error }}</strong> {{ query.result.info }} <i class="fa fa-star-o fa-lg" aria-hidden="true" ng-if="query.result.name" ng-click="query.handleFavoritesClick(query.result)"></i></p>
         <h2>Dependencies:</h2>
         <span ng-repeat="dependency in query.result.dependencies.development">
         <p></p><a href="https://rubygems.org/gems/{{dependency.name}}"><strong>{{ dependency.name }}</strong></a></p>
