@@ -11,7 +11,7 @@ const MODULE_NAME = 'app';
             this.query = '';
             this.result = {};
 
-            this.executeQuery = function executeQuery() {
+            this.executeQuery = () => {
                 const rubyApiPromise = new Promise( (resolve, reject) => {
                     return rubyApi({
                             originalUrl : '/api/v1/gems/' + this.query + '.json'},
@@ -69,6 +69,11 @@ const MODULE_NAME = 'app';
                     window.localStorage.setItem('gems', JSON.stringify(newGemObject));
                 }
 
+            };
+
+            this.loadFavorites = () => {
+                let favoriteGems = window.localStorage.getItem('gems');
+                this.favoriteGems = favoriteGems;
             }
 
         }]);
