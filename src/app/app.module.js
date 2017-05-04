@@ -3,15 +3,15 @@ import rubyApi from '../../utils/ruby-gems-proxy-middleware';
 
 const MODULE_NAME = 'app';
 
+// TODO: Split this out into it's own controller file
 (function(angular) {
     'use strict';
     angular.module('query', [])
         .controller('QueryController', ['$scope', function QueryController($scope) {
             this.query = '';
-            this.result = { queryResponse: 'foobar'};
+            this.result = {};
 
             this.executeQuery = function executeQuery() {
-                console.log(this.query);
                 const rubyApiPromise = new Promise( (resolve, reject) => {
                     return rubyApi({
                             originalUrl : '/api/v1/gems/' + this.query + '.json'},
@@ -23,7 +23,7 @@ const MODULE_NAME = 'app';
 
                 // Let's use a promise since the API call is async.
                 rubyApiPromise.then( result => {
-                    this.result.queryResponse = result;
+                    this.result = result;
                     // View wasn't updating, so forcing it to reset with $apply().
                     $scope.$apply();
                 }, function(err) {
@@ -33,7 +33,7 @@ const MODULE_NAME = 'app';
 
             this.saveToFavorites = function saveToFavorites(name, dependencies, info) {
                 console.log("saveToFavorites invoked");
-                var gemDetails = {
+                let gemDetails = {
                     name: {
                         gemDependencies: dependencies,
                         gemInfo: info
