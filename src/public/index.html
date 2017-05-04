@@ -1,2 +1,28 @@
-<html>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search View</title>
+    <script src="https://use.fontawesome.com/d9f15f8f3c.js"></script>
+
+
+</head>
+<body >
+<div ng-app="app" ng-controller="QueryController as query">
+    <h1>Search Ruby Gems</h1>
+    <div>
+        <input type="text" ng-model="query.query" required > <button class="btn" ng-click="query.executeQuery()">Search</button>
+    </div>
+    <div>
+        <h2>Resulting Gem:</h2>
+        <p><strong>{{ query.result.queryResponse.name }}</strong> {{ query.result.queryResponse.info }} <i class="fa fa-star-o" aria-hidden="true" ng-if="query.result.queryResponse.name" ng-click="query.saveToFavorites(query.result.queryResponse.name, query.result.queryResponse.dependencies, query.result.queryResponse.info)"></i></p>
+        <h2>Dependencies:</h2>
+        <!--<p>{{ query.result.queryResponse.dependencies.development }}-->
+        <span ng-repeat="dependency in query.result.queryResponse.dependencies.development">
+        <p></p><a href="https://rubygems.org/gems/{{dependency.name}}"><strong>{{ dependency.name }}</strong></a></p>
+
+
+    </div>
+</div>
+</body>
 </html>
