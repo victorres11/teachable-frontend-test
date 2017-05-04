@@ -1,21 +1,20 @@
 // Proxies requests starting with /api to the rubygems.org api
 const request = require('request');
 
-module.exports = function (req, res, next) {
+module.exports = function (req, resolve, reject) {
   if(!req.originalUrl.includes("/api")) {
-    console.log(req.originalUrl)
-    next()
+    // next() // not sure what this was meant for to be honest :/
   }
   else {
     const url = 'https://rubygems.org' + req.originalUrl;
     request.get(url,function(err,response,body){
       if(response.statusCode === 400) { // no query was sent, so send an empty array as results
-        res.send([])
+          // TODO: Change to catch all bad status codes.
+          reject("Invalid status code from API.")
       }
       else {
-        res.send(body);
+          resolve(JSON.parse(body))
       }
-      //TODO Do something with response
       });
 
   }
