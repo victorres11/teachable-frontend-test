@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Favorites View</title>
+    <script src="https://use.fontawesome.com/d9f15f8f3c.js"></script>
+
+</head>
+<body>
+<div ng-app="app" ng-controller="QueryController as query" ng-init="query.loadFavoritesToModel()">
+<h1>Your Favorite Gems</h1>
+    <div ng-repeat="(name, value) in query.favoriteGems">
+        <a href="https://rubygems.org/gems/{{name}}"><strong> {{ name }}</strong></a> <i class="fa fa-star fa-lg" aria-hidden="true" ng-if="name" ng-click="query.removeFromFavorites(name)"></i>
+    </div>
+</div>
+</body>
+</html>
