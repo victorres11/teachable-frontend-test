@@ -31,17 +31,44 @@ const MODULE_NAME = 'app';
                 });
             };
 
-            this.saveToFavorites = function saveToFavorites(name, dependencies, info) {
-                console.log("saveToFavorites invoked");
+            this.handleFavoritesClick = (queryResult) => {
+                let existingGems = window.localStorage.getItem('gems');
+                existingGems = JSON.parse(existingGems);
+
+                if (existingGems && existingGems[queryResult.name]) {
+                    this.removeFromFavorites(existingGems, queryResult.name)
+                } else {
+                    this.saveToFavorites(queryResult.name, queryResult.dependencies, queryResult.info)
+                }
+            };
+
+            this.saveToFavorites = (name, dependencies, info) => {
+                console.log("saveToFavorites invoked!");
                 let gemDetails = {
-                    name: {
+                    [name]: {
                         gemDependencies: dependencies,
                         gemInfo: info
                     }
                 };
-                console.log(gemDetails);
 
-                window.localStorage.setItem("saved", JSON.stringify(gemDetails));
+                let existingGems = window.localStorage.getItem('gems');
+                existingGems = JSON.parse(existingGems);
+
+                let mergedGemObject = Object.assign({}, existingGems, gemDetails);
+                window.localStorage.setItem('gems', JSON.stringify(mergedGemObject));
+            };
+
+            this.removeFromFavorites = (existingGems, name) => {
+                console.log("removeFromFavorites invoked!");
+                // remove this gem from existing gems
+                let newGemObject = Object.assign({}, existingGems);
+                delete newGemObject[name];
+
+                if (newGemObject) {
+                    window.localStorage.clear();
+                    window.localStorage.setItem('gems', JSON.stringify(newGemObject));
+                }
+
             }
 
         }]);
