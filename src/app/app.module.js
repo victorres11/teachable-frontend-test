@@ -10,6 +10,7 @@ const MODULE_NAME = 'app';
         .controller('QueryController', ['$scope', function QueryController($scope) {
             this.query = '';
             this.result = {};
+            this.favoriteGems = {};
 
             this.executeQuery = () => {
                 const rubyApiPromise = new Promise( (resolve, reject) => {
@@ -31,9 +32,14 @@ const MODULE_NAME = 'app';
                 });
             };
 
-            this.handleFavoritesClick = (queryResult) => {
+            this.loadExistingGems = () => {
                 let existingGems = window.localStorage.getItem('gems');
                 existingGems = JSON.parse(existingGems);
+                return existingGems
+            };
+
+            this.handleFavoritesClick = (queryResult) => {
+                let existingGems = this.loadExistingGems();
 
                 if (existingGems && existingGems[queryResult.name]) {
                     this.removeFromFavorites(existingGems, queryResult.name)
@@ -51,8 +57,7 @@ const MODULE_NAME = 'app';
                     }
                 };
 
-                let existingGems = window.localStorage.getItem('gems');
-                existingGems = JSON.parse(existingGems);
+                let existingGems = this.loadExistingGems();
 
                 let mergedGemObject = Object.assign({}, existingGems, gemDetails);
                 window.localStorage.setItem('gems', JSON.stringify(mergedGemObject));
@@ -71,9 +76,9 @@ const MODULE_NAME = 'app';
 
             };
 
-            this.loadFavorites = () => {
-                let favoriteGems = window.localStorage.getItem('gems');
-                this.favoriteGems = favoriteGems;
+            this.loadFavoritesToModel = () => {
+                let existingGems = this.loadExistingGems();
+                this.favoriteGems = existingGems;
             }
 
         }]);
